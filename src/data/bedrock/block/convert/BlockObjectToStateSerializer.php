@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\data\bedrock\block\convert;
 
+use Hoa\File\Write;
 use pocketmine\block\ActivatorRail;
 use pocketmine\block\AmethystCluster;
 use pocketmine\block\Anvil;
@@ -85,6 +86,7 @@ use pocketmine\block\FrostedIce;
 use pocketmine\block\Furnace;
 use pocketmine\block\GlazedTerracotta;
 use pocketmine\block\GlowLichen;
+use pocketmine\block\Grindstone;
 use pocketmine\block\HayBale;
 use pocketmine\block\Hopper;
 use pocketmine\block\ItemFrame;
@@ -1358,6 +1360,11 @@ final class BlockObjectToStateSerializer implements BlockStateSerializer{
 		$this->mapStairs(Blocks::GRANITE_STAIRS(), Ids::GRANITE_STAIRS);
 		$this->map(Blocks::GRANITE_WALL(), fn(Wall $block) => Helper::encodeLegacyWall($block, StringValues::WALL_BLOCK_TYPE_GRANITE));
 		$this->map(Blocks::GREEN_TORCH(), fn(Torch $block) => Helper::encodeColoredTorch($block, true, Writer::create(Ids::COLORED_TORCH_RG)));
+		$this->map(Blocks::GRINDSTONE(), function(Grindstone $grindstone) : Writer{
+			return Writer::create(Ids::GRINDSTONE)
+				->writeString(StateNames::ATTACHMENT, $grindstone->getAttachment()->value)
+				->writeLegacyHorizontalFacing($grindstone->getFacing());
+		});
 		$this->map(Blocks::HAY_BALE(), function(HayBale $block) : Writer{
 			return Writer::create(Ids::HAY_BLOCK)
 				->writeInt(StateNames::DEPRECATED, 0)

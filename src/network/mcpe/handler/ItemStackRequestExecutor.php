@@ -44,6 +44,7 @@ use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\CreativeCreate
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\DeprecatedCraftingResultsStackRequestAction;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\DestroyStackRequestAction;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\DropStackRequestAction;
+use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\GrindstoneStackRequestAction;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\ItemStackRequest;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\ItemStackRequestAction;
 use pocketmine\network\mcpe\protocol\types\inventory\stackrequest\ItemStackRequestSlotInfo;
@@ -55,8 +56,10 @@ use pocketmine\network\mcpe\protocol\types\inventory\UIInventorySlotOffset;
 use pocketmine\player\Player;
 use pocketmine\utils\AssumptionFailedError;
 use function array_key_first;
+use function array_map;
 use function count;
 use function spl_object_id;
+use function var_dump;
 
 class ItemStackRequestExecutor{
 	private TransactionBuilder $builder;
@@ -79,6 +82,7 @@ class ItemStackRequestExecutor{
 		private ItemStackRequest $request
 	){
 		$this->builder = new TransactionBuilder();
+		var_dump(array_map(fn($action) => $action::class, $this->request->getActions()));
 	}
 
 	protected function prettyInventoryAndSlot(Inventory $inventory, int $slot) : string{
@@ -359,6 +363,8 @@ class ItemStackRequestExecutor{
 				throw new ItemStackRequestProcessException("No such crafting result index: " . $action->getResultIndex());
 			}
 			$this->setNextCreatedItem($nextResultItem);
+		}elseif($action instanceof GrindstoneStackRequestAction){
+			var_dump("GRINDSTONE!!", $action);
 		}elseif($action instanceof DeprecatedCraftingResultsStackRequestAction){
 			//no obvious use
 		}else{

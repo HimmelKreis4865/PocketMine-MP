@@ -37,6 +37,7 @@ use function is_array;
 use function is_int;
 use function is_string;
 use function json_decode;
+use function var_dump;
 use const JSON_THROW_ON_ERROR;
 
 /**
@@ -66,6 +67,9 @@ final class BlockStateDictionary{
 		$table = [];
 		foreach($this->states as $stateId => $stateNbt){
 			$table[$stateNbt->getStateName()][$stateNbt->getRawStateProperties()] = $stateId;
+			if($stateNbt->getStateName() === "minecraft:grindstone") {
+				var_dump($stateNbt);
+			}
 		}
 
 		//setup fast path for stateless blocks

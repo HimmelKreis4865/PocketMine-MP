@@ -43,6 +43,7 @@ use pocketmine\block\utils\DirtType;
 use pocketmine\block\utils\DripleafState;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\block\utils\FroglightType;
+use pocketmine\block\utils\GrindstoneAttachment;
 use pocketmine\block\utils\LeverFacing;
 use pocketmine\block\utils\SlabType;
 use pocketmine\block\VanillaBlocks as Blocks;
@@ -1183,6 +1184,13 @@ final class BlockStateToObjectDeserializer implements BlockStateDeserializer{
 				->setShape($in->readBoundedInt(StateNames::RAIL_DIRECTION, 0, 5));
 		});
 		$this->mapStairs(Ids::GRANITE_STAIRS, fn() => Blocks::GRANITE_STAIRS());
+		$this->map(Ids::GRINDSTONE, function(Reader $in) : Block{
+			$in->readString(StateNames::ATTACHMENT);
+			$in->readInt(StateNames::DIRECTION);
+			return Blocks::GRINDSTONE()
+				->setAttachment(GrindstoneAttachment::tryFrom($in->readString(StateNames::ATTACHMENT)) ?? GrindstoneAttachment::STANDING)
+				->setFacing($in->readLegacyHorizontalFacing());
+		});
 		$this->map(Ids::HAY_BLOCK, function(Reader $in) : Block{
 			$in->ignored(StateNames::DEPRECATED);
 			return Blocks::HAY_BALE()->setAxis($in->readPillarAxis());

@@ -449,6 +449,7 @@ use function strtolower;
  * @method static GrassPath GRASS_PATH()
  * @method static Gravel GRAVEL()
  * @method static Torch GREEN_TORCH()
+ * @method static Grindstone GRINDSTONE()
  * @method static HangingRoots HANGING_ROOTS()
  * @method static HardenedClay HARDENED_CLAY()
  * @method static HardenedGlass HARDENED_GLASS()
@@ -907,6 +908,7 @@ final class VanillaBlocks{
 		self::register("grass", new Grass(new BID(Ids::GRASS), "Grass", new Info($grassBreakInfo, [Tags::DIRT])));
 		self::register("grass_path", new GrassPath(new BID(Ids::GRASS_PATH), "Grass Path", new Info($grassBreakInfo)));
 		self::register("gravel", new Gravel(new BID(Ids::GRAVEL), "Gravel", new Info(BreakInfo::shovel(0.6))));
+		self::register("grindstone", new Grindstone(new BID(Ids::GRINDSTONE), "Grindstone", new Info(BreakInfo::pickaxe(2.0, ToolTier::WOOD))));
 
 		$hardenedClayBreakInfo = new Info(BreakInfo::pickaxe(1.25, ToolTier::WOOD, 21.0));
 		self::register("hardened_clay", new HardenedClay(new BID(Ids::HARDENED_CLAY), "Hardened Clay", $hardenedClayBreakInfo));
